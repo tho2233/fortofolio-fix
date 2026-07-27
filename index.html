@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Modern - Live Dashboard Admin</title>
+
+  <!-- Font & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+  <style>
+    /* ==========================================
+       1. GLOBAL STYLES & THEME VARIABLES
+       ========================================== */
+    :root {
+      --bg-color: #0d0f17;
+      --card-bg: rgba(22, 27, 38, 0.7);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-color: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-blur: blur(20px);
+      --border-radius: 16px;
+      --font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Helper Utilities */
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-4 { gap: 1rem; }
+
+    /* ==========================================
+       2. TAMPILAN WEBSITE UTAMA (PORTFOLIO VIEW)
+       ========================================== */
+    header {
+      padding: 4rem 2rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .profile-avatar-container {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .profile-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .hero-name { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .hero-role { color: var(--accent-color); font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+    .hero-bio { max-width: 600px; margin: 0 auto 1.5rem; color: var(--text-muted); }
+
+    .main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 0.5rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+    }
+
+    .project-img { width: 100%; height: 160px; object-fit: cover; }
+    .project-info { padding: 1.25rem; }
+    .project-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .project-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-contact:hover {
+      background: var(--accent-color);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* ==========================================
+       3. FLOATING ACTION BUTTON & ADMIN TRIGGER
+       ========================================== */
+    .admin-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: rgba(18, 18, 24, 0.85);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .admin-fab:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 30px var(--accent-glow);
+      border-color: var(--accent-color);
+    }
+
+    /* Quick FAB (+) Menu */
+    .quick-fab-menu {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      z-index: 8999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quick-fab-item {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      backdrop-filter: var(--glass-blur);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .quick-fab-item:hover { background: var(--accent-color); }
+
+    /* ==========================================
+       4. AUTH MODAL (GLASSMORPHISM LOGIN)
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-card {
+      background: rgba(22, 27, 38, 0.9);
+      border: 1px solid var(--glass-border);
+      padding: 2.5rem;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .shake { animation: shake 0.4s ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+
+    /* Inputs & Buttons */
+    .admin-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: white;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .admin-input:focus { border-color: var(--accent-color); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent-color);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    /* ==========================================
+       5. DASHBOARD PANEL & SIDEBAR LAYOUT
+       ========================================== */
+    .admin-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 100%; max-width: 900px;
+      height: 100vh;
+      background: rgba(13, 15, 23, 0.92);
+      backdrop-filter: var(--glass-blur);
+      border-left: 1px solid var(--glass-border);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(0);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .admin-panel.panel-hidden {
+      transform: translateX(100%);
+    }
+
+    .panel-header {
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: 220px;
+      background: rgba(0, 0, 0, 0.2);
+      border-right: 1px solid var(--glass-border);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      overflow-y: auto;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-align: left;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+    }
+
+    .nav-btn.active { border-left: 3px solid var(--accent-color); }
+    .nav-btn.danger { color: #ef4444; margin-top: auto; }
+
+    /* Content Area */
+    .admin-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Dashboard Overview Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 1.25rem;
+      border-radius: 12px;
+    }
+
+    .stat-card h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent-color); }
+
+    /* ==========================================
+       6. TOAST NOTIFICATIONS & SKELETONS
+       ========================================== */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: rgba(22, 27, 38, 0.95);
+      border: 1px solid var(--glass-border);
+      border-left: 4px solid var(--accent-color);
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Skeleton Loading Shimmer */
+    .skeleton-box {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+      height: 20px;
+      margin-bottom: 10px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Responsive Mobile Adjustments */
+    @media (max-width: 768px) {
+      .admin-panel { max-width: 100%; }
+      .panel-body { flex-direction: column; }
+      .admin-sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 0.5rem; }
+      .nav-btn { whitespace: nowrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+     PORTFOLIO FRONTEND VIEW
+     ========================================== -->
+  <header>
+    <div class="profile-avatar-container">
+      <img id="view-avatar" class="profile-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Foto Profil">
+    </div>
+    <h1 id="view-name" class="hero-name">Alex Rivera</h1>
+    <div id="view-role" class="hero-role">Senior Full-Stack Developer</div>
+    <p id="view-bio" class="hero-bio">Membangun pengalaman web modern berskala tinggi dengan performa tinggi dan desain estetis.</p>
+  </header>
+
+  <main class="main-content">
+    <h2 class="section-title">Project Utama</h2>
+    <div id="view-projects-grid" class="projects-grid">
+      <!-- Generated Dynamically via JS -->
+    </div>
+
+    <h2 class="section-title">Hubungi Saya</h2>
+    <div class="contact-links">
+      <a id="btn-wa" href="#" target="_blank" class="btn-contact"><i data-feather="message-circle"></i> WhatsApp</a>
+      <a id="btn-email" href="#" class="btn-contact"><i data-feather="mail"></i> Email</a>
+      <a id="btn-github" href="#" target="_blank" class="btn-contact"><i data-feather="github"></i> GitHub</a>
+    </div>
+  </main>
+
+  <!-- ==========================================
+     FLOATING ACTION BUTTONS (FAB)
+     ========================================== -->
+  <div id="quick-fab-menu" class="quick-fab-menu hidden">
+    <button class="quick-fab-item" onclick="Admin.openTab('projects')"><i data-feather="plus"></i> Tambah Project</button>
+    <button class="quick-fab-item" onclick="Admin.openTab('profile')"><i data-feather="image"></i> Ubah Foto Profil</button>
+  </div>
+
+  <button id="admin-trigger" class="admin-fab">
+    <i data-feather="settings"></i> Edit Portfolio
+  </button>
+
+  <!-- ==========================================
+     AUTH LOGIN MODAL
+     ========================================== -->
+  <div id="login-modal" class="modal-overlay hidden">
+    <div id="login-card" class="login-card">
+      <h3 style="margin-bottom:0.5rem;">🔐 Admin Access</h3>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Masukkan password untuk mengedit website.</p>
+      <form id="login-form">
+        <input type="password" id="login-pass" class="admin-input" placeholder="Password Admin (Default: admin123)" required>
+        <button type="submit" class="btn-primary">Masuk Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+     ADMIN DASHBOARD PANEL (DRAWER)
+     ========================================== -->
+  <aside id="admin-panel" class="admin-panel panel-hidden">
+    <div class="panel-header">
+      <div class="flex items-center gap-2">
+        <i data-feather="sliders" style="color:var(--accent-color)"></i>
+        <h3>Dashboard Admin</h3>
+      </div>
+      <button id="close-panel" style="background:none; border:none; color:white; cursor:pointer;"><i data-feather="x"></i></button>
+    </div>
+
+    <div class="panel-body">
+      <!-- Sidebar Navigation -->
+      <nav class="admin-sidebar">
+        <button class="nav-btn active" onclick="Admin.switchTab('overview', this)"><i data-feather="grid"></i> Dashboard</button>
+        <button class="nav-btn" onclick="Admin.switchTab('personal', this)"><i data-feather="user"></i> Informasi Pribadi</button>
+        <button class="nav-btn" onclick="Admin.switchTab('projects', this)"><i data-feather="folder"></i> Projects</button>
+        <button class="nav-btn" onclick="Admin.switchTab('contacts', this)"><i data-feather="phone"></i> Kontak</button>
+        <button class="nav-btn" onclick="Admin.switchTab('theme', this)"><i data-feather="droplet"></i> Theme Engine</button>
+        <button class="nav-btn" onclick="Admin.switchTab('backup', this)"><i data-feather="database"></i> Backup & Restore</button>
+        <button class="nav-btn danger" onclick="Admin.logout()"><i data-feather="log-out"></i> Logout</button>
+      </nav>
+
+      <!-- Main Form Tab Content -->
+      <main class="admin-content">
+        <!-- Skeleton Loading Layer -->
+        <div id="admin-skeleton" class="hidden">
+          <div class="skeleton-box" style="width:40%"></div>
+          <div class="skeleton-box" style="height:100px;"></div>
+          <div class="skeleton-box" style="width:70%"></div>
+        </div>
+
+        <!-- TAB 1: OVERVIEW -->
+        <section id="tab-overview" class="tab-pane active">
+          <h3 style="margin-bottom:1rem;">Ringkasan Analytics</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h4>Total Kunjungan</h4>
+              <div id="stat-views" class="value">0</div>
+            </div>
+            <div class="stat-card">
+              <h4>Total Projects</h4>
+              <div id="stat-projects" class="value">0</div>
+            </div>
+            <div class="stat-card">
+              <h4>Klik WhatsApp</h4>
+              <div id="stat-wa" class="value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: PERSONAL INFO -->
+        <section id="tab-personal" class="tab-pane">
+          <h3 style="margin-bottom:1rem;">Informasi Pribadi</h3>
+          <form id="form-personal">
+            <label style="font-size:0.85rem;">Foto Profil (URL / Drag & Drop Base64)</label>
+            <input type="text" id="field-avatar" class="admin-input" placeholder="https://image-url.com/pic.jpg">
+            
+            <label style="font-size:0.85rem;">Nama Lengkap</label>
+            <input type="text" id="field-name" class="admin-input">
+
+            <label style="font-size:0.85rem;">Profesi</label>
+            <input type="text" id="field-role" class="admin-input">
+
+            <label style="font-size:0.85rem;">Deskripsi / Bio Ringkas</label>
+            <textarea id="field-bio" class="admin-input" rows="4"></textarea>
+          </form>
+        </section>
+
+        <!-- TAB 3: PROJECTS MANAGER -->
+        <section id="tab-projects" class="tab-pane">
+          <h3 style="margin-bottom:1rem;">Kelola Projects</h3>
+          <form id="form-add-project" style="margin-bottom:2rem; background:rgba(0,0,0,0.2); padding:1rem; border-radius:12px;">
+            <h4 style="margin-bottom:0.75rem; font-size:0.9rem;">Tambah Project Baru</h4>
+            <input type="text" id="proj-title" class="admin-input" placeholder="Nama Project" required>
+            <input type="text" id="proj-desc" class="admin-input" placeholder="Deskripsi Singkat" required>
+            <input type="text" id="proj-img" class="admin-input" placeholder="URL Gambar Thumbnail" required>
+            <button type="submit" class="btn-primary">+ Tambah Project</button>
+          </form>
+
+          <h4>Daftar Project Active</h4>
+          <div id="admin-projects-list" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem;">
+            <!-- Managed Dynamically -->
+          </div>
+        </section>
+
+        <!-- TAB 4: CONTACTS MANAGER -->
+        <section id="tab-contacts" class="tab-pane">
+          <h3 style="margin-bottom:1rem;">Pengaturan Kontak</h3>
+          <form id="form-contacts">
+            <label style="font-size:0.85rem;">Nomor WhatsApp (Format: 628xxx)</label>
+            <input type="text" id="field-wa" class="admin-input">
+
+            <label style="font-size:0.85rem;">Email Address</label>
+            <input type="email" id="field-email" class="admin-input">
+
+            <label style="font-size:0.85rem;">GitHub Username / Link</label>
+            <input type="text" id="field-github" class="admin-input">
+          </form>
+        </section>
+
+        <!-- TAB 5: THEME MANAGER -->
+        <section id="tab-theme" class="tab-pane">
+          <h3 style="margin-bottom:1rem;">Custom Accent & Styling</h3>
+          <div style="margin-bottom:1rem;">
+            <label style="font-size:0.85rem; display:block; margin-bottom:0.5rem;">Pilih Warna Accent Utama</label>
+            <input type="color" id="theme-accent-picker" value="#6366f1" style="background:none; border:none; cursor:pointer; width:60px; height:40px;">
+          </div>
+        </section>
+
+        <!-- TAB 6: BACKUP & RESTORE -->
+        <section id="tab-backup" class="tab-pane">
+          <h3 style="margin-bottom:1rem;">Backup & Restore Data</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Ekspor seluruh isi website ke file JSON atau impor data baru secara instan.</p>
+          <div class="flex gap-2">
+            <button class="btn-primary" onclick="Admin.exportJSON()"><i data-feather="download"></i> Export Data (JSON)</button>
+            <button class="btn-primary" style="background:#374151;" onclick="document.getElementById('file-import').click()"><i data-feather="upload"></i> Import Data</button>
+            <input type="file" id="file-import" class="hidden" accept=".json" onchange="Admin.importJSON(event)">
+          </div>
+        </section>
+      </main>
+    </div>
+  </aside>
+
+  <!-- Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ==========================================
+     7. JAVASCRIPT LOGIC & STATE ENGINE
+     ========================================== -->
+  <script>
+    /**
+     * Admin Engine - Core Architecture
+     */
+    class PortfolioCMS {
+      constructor() {
+        this.PASSWORD_KEY = "admin123"; // Password Statis Default
+        this.STORAGE_KEY = "portfolio_cms_db_v2";
+        this.SESSION_KEY = "is_admin_authenticated";
+
+        // Initial Default State
+        this.state = {
+          personal: {
+            name: "Alex Rivera",
+            role: "Senior Full-Stack Engineer",
+            bio: "Membangun pengalaman web modern berskala tinggi dengan performa tinggi dan desain estetis.",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+          },
+          contacts: {
+            wa: "6281234567890",
+            email: "alex.rivera@example.com",
+            github: "https://github.com"
+          },
+          projects: [
+            {
+              id: "p1",
+              title: "E-Commerce Glassmorphism Dashboard",
+              desc: "Dashboard analitik real-time dengan teknologi React dan Tailwind CSS.",
+              img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+            }
+          ],
+          stats: { views: 0, waClicks: 0 },
+          theme: { accent: "#6366f1" }
+        };
+
+        this.init();
+      }
+
+      init() {
+        this.loadState();
+        this.trackVisitor();
+        this.bindEvents();
+        this.renderFrontend();
+        feather.replace();
+      }
+
+      // State Management
+      loadState() {
+        const stored = localStorage.getItem(this.STORAGE_KEY);
+        if (stored) {
+          try { this.state = { ...this.state, ...JSON.parse(stored) }; }
+          catch (e) { console.error("Gagal membaca LocalStorage", e); }
+        }
+      }
+
+      saveState() {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
+        this.renderFrontend();
+        this.showToast("✅ Perubahan berhasil disimpan otomatis");
+      }
+
+      // Visitor Counter
+      trackVisitor() {
+        if (!sessionStorage.getItem("visited_session")) {
+          sessionStorage.setItem("visited_session", "true");
+          this.state.stats.views += 1;
+          this.saveState();
+        }
+      }
+
+      // Render Frontend Real-time
+      renderFrontend() {
+        // Personal Info
+        document.getElementById("view-name").textContent = this.state.personal.name;
+        document.getElementById("view-role").textContent = this.state.personal.role;
+        document.getElementById("view-bio").textContent = this.state.personal.bio;
+        document.getElementById("view-avatar").src = this.state.personal.avatar;
+
+        // Contacts Binding
+        const waBtn = document.getElementById("btn-wa");
+        waBtn.href = `https://wa.me/${this.state.contacts.wa}`;
+        waBtn.onclick = () => { this.state.stats.waClicks++; this.saveState(); };
+
+        document.getElementById("btn-email").href = `mailto:${this.state.contacts.email}`;
+        document.getElementById("btn-github").href = this.state.contacts.github;
+
+        // Theme Engine Accent
+        document.documentElement.style.setProperty('--accent-color', this.state.theme.accent);
+
+        // Projects Grid Engine
+        const grid = document.getElementById("view-projects-grid");
+        grid.innerHTML = this.state.projects.map(p => `
+          <div class="project-card">
+            <img src="${p.img}" class="project-img" alt="${p.title}">
+            <div class="project-info">
+              <div class="project-title">${p.title}</div>
+              <div class="project-desc">${p.desc}</div>
+            </div>
+          </div>
+        `).join('');
+
+        // Update Dashboard Stats View
+        document.getElementById("stat-views").textContent = this.state.stats.views;
+        document.getElementById("stat-projects").textContent = this.state.projects.length;
+        document.getElementById("stat-wa").textContent = this.state.stats.waClicks;
+      }
+
+      // Auth Handlers
+      isAuthenticated() {
+        return sessionStorage.getItem(this.SESSION_KEY) === "true";
+      }
+
+      login(password) {
+        if (password === this.PASSWORD_KEY) {
+          sessionStorage.setItem(this.SESSION_KEY, "true");
+          return true;
+        }
+        return false;
+      }
+
+      logout() {
+        sessionStorage.removeItem(this.SESSION_KEY);
+        this.togglePanel(false);
+        this.showToast("🔒 Berhasil keluar dari Dashboard");
+      }
+
+      // UI Drawer & Tab Interactions
+      togglePanel(show) {
+        const panel = document.getElementById("admin-panel");
+        if (show) {
+          panel.classList.remove("panel-hidden");
+          this.populateForms();
+        } else {
+          panel.classList.add("panel-hidden");
+        }
+      }
+
+      switchTab(tabId, element) {
+        document.querySelectorAll(".tab-pane").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".nav-btn").forEach(el => el.classList.remove("active"));
+        
+        document.getElementById(`tab-${tabId}`).classList.add("active");
+        if (element) element.classList.add("active");
+      }
+
+      // Populate Input Forms from State
+      populateForms() {
+        document.getElementById("field-avatar").value = this.state.personal.avatar;
+        document.getElementById("field-name").value = this.state.personal.name;
+        document.getElementById("field-role").value = this.state.personal.role;
+        document.getElementById("field-bio").value = this.state.personal.bio;
+
+        document.getElementById("field-wa").value = this.state.contacts.wa;
+        document.getElementById("field-email").value = this.state.contacts.email;
+        document.getElementById("field-github").value = this.state.contacts.github;
+
+        this.renderAdminProjectList();
+      }
+
+      renderAdminProjectList() {
+        const list = document.getElementById("admin-projects-list");
+        list.innerHTML = this.state.projects.map((p, index) => `
+          <div style="background:rgba(255,255,255,0.05); padding:0.75rem; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong style="font-size:0.9rem;">${p.title}</strong>
+            </div>
+            <button onclick="Admin.deleteProject(${index})" style="background:#ef4444; border:none; color:white; padding:4px 8px; border-radius:6px; cursor:pointer;"><i data-feather="trash-2" style="width:14px;"></i></button>
+          </div>
+        `).join('');
+        feather.replace();
+      }
+
+      deleteProject(index) {
+        this.state.projects.splice(index, 1);
+        this.saveState();
+        this.renderAdminProjectList();
+      }
+
+      // Toast System
+      showToast(msg) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+
+      // Backup & Restore
+      exportJSON() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state));
+        const dlAnchor = document.createElement('a');
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", `portfolio_backup_${new Date().toISOString().slice(0,10)}.json`);
+        dlAnchor.click();
+      }
+
+      importJSON(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+          try {
+            this.state = JSON.parse(e.target.result);
+            this.saveState();
+            this.populateForms();
+            this.showToast("⚡ Import data berhasil!");
+          } catch (err) {
+            this.showToast("❌ File JSON tidak valid!");
+          }
+        };
+        fileReader.readAsText(event.target.files[0]);
+      }
+
+      // Event Binding Engine
+      bindEvents() {
+        // Trigger Admin FAB Button
+        document.getElementById("admin-trigger").addEventListener("click", () => {
+          if (this.isAuthenticated()) {
+            this.togglePanel(true);
+          } else {
+            document.getElementById("login-modal").classList.remove("hidden");
+          }
+        });
+
+        // Close Panel Button
+        document.getElementById("close-panel").addEventListener("click", () => this.togglePanel(false));
+
+        // Form Login Handler
+        document.getElementById("login-form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const pass = document.getElementById("login-pass").value;
+          if (this.login(pass)) {
+            document.getElementById("login-modal").classList.add("hidden");
+            document.getElementById("login-pass").value = "";
+            this.togglePanel(true);
+          } else {
+            const card = document.getElementById("login-card");
+            card.classList.add("shake");
+            setTimeout(() => card.classList.remove("shake"), 400);
+            this.showToast("❌ Password Salah!");
+          }
+        });
+
+        // Instant Auto-Save Event Listeners for Forms
+        document.getElementById("form-personal").addEventListener("input", () => {
+          this.state.personal.avatar = document.getElementById("field-avatar").value;
+          this.state.personal.name = document.getElementById("field-name").value;
+          this.state.personal.role = document.getElementById("field-role").value;
+          this.state.personal.bio = document.getElementById("field-bio").value;
+          this.saveState();
+        });
+
+        document.getElementById("form-contacts").addEventListener("input", () => {
+          this.state.contacts.wa = document.getElementById("field-wa").value;
+          this.state.contacts.email = document.getElementById("field-email").value;
+          this.state.contacts.github = document.getElementById("field-github").value;
+          this.saveState();
+        });
+
+        // Add Project Form Handler
+        document.getElementById("form-add-project").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const title = document.getElementById("proj-title").value;
+          const desc = document.getElementById("proj-desc").value;
+          const img = document.getElementById("proj-img").value;
+
+          this.state.projects.push({ id: Date.now().toString(), title, desc, img });
+          this.saveState();
+          this.renderAdminProjectList();
+
+          e.target.reset();
+        });
+
+        // Color Picker Handler
+        document.getElementById("theme-accent-picker").addEventListener("input", (e) => {
+          this.state.theme.accent = e.target.value;
+          this.saveState();
+        });
+      }
+    }
+
+    // Instansiasi Global System
+    const Admin = new PortfolioCMS();
+  </script>
+</body>
+</html>
+    </div>
+
+    <!-- Layout Container -->
+    <div class="admin-layout">
+      <nav class="admin-sidebar">
+        <button class="nav-item active" data-tab="overview">🏠 Dashboard</button>
+        <button class="nav-item" data-tab="personal">👤 Informasi Pribadi</button>
+        <button class="nav-item" data-tab="projects">📂 Project Manager</button>
+        <button class="nav-item" data-tab="skills">🛠 Skills & Stack</button>
+        <button class="nav-item" data-tab="theme">🎨 Theme Manager</button>
+        <button class="nav-item" data-tab="backup">💾 Backup & Restore</button>
+        <button class="nav-item danger" id="admin-logout-btn">🚪 Logout</button>
+      </nav>
+
+      <main class="admin-content">
+        <!-- Tab: Overview -->
+        <section id="tab-overview" class="tab-pane active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h4>Total Projects</h4>
+              <span class="counter" id="stat-projects">0</span>
+            </div>
+            <div class="stat-card">
+              <h4>Total Kunjungan</h4>
+              <span class="counter" id="stat-views">0</span>
+            </div>
+            <div class="stat-card">
+              <h4>Klik WhatsApp</h4>
+              <span class="counter" id="stat-wa">0</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab: Personal Info -->
+        <section id="tab-personal" class="tab-pane">
+          <form id="form-personal-info">
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <input type="text" name="fullName" class="admin-input" />
+            </div>
+            <div class="form-group">
+              <label>Profesi / Title</label>
+              <input type="text" name="role" class="admin-input" />
+            </div>
+            <div class="form-group">
+              <label>Bio Ringkas</label>
+              <textarea name="bio" class="admin-input" rows="4"></textarea>
+            </div>
+          </form>
+        </section>
+
+        <!-- Dynamic Loading Skeleton -->
+        <div id="admin-skeleton" class="skeleton-wrapper hidden">
+          <div class="skeleton-line title"></div>
+          <div class="skeleton-line body"></div>
+          <div class="skeleton-line body"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</aside>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-region"></div>
