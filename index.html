@@ -1,39 +1,1473 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portofolio Modern - Live Dashboard Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Thoha - Portfolio & Web Tools</title>
+    <meta name="description" content="Portofolio resmi Muhammad Thoha - Student, Web Developer, Game Developer & Developer Tools Platform.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CDN Library External untuk QR Code & Barcode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
-  <!-- Font & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#7CC8FF',
+                            orange: '#FF7A2F',
+                            dark: '#0F172A',
+                            slate: '#1E293B',
+                            lightBg: '#F8FAFC',
+                            cardBg: '#FFFFFF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -10px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 20px 40px -15px rgba(124, 200, 255, 0.25)',
+                        'glow-orange': '0 10px 25px -5px rgba(255, 122, 47, 0.4)',
+                        'glow-blue': '0 10px 25px -5px rgba(124, 200, 255, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
 
-  <style>
-    /* ==========================================
-       1. GLOBAL STYLES & THEME VARIABLES
-       ========================================== */
-    :root {
-      --bg-color: #0d0f17;
-      --card-bg: rgba(22, 27, 38, 0.7);
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --accent-color: #6366f1;
-      --accent-hover: #4f46e5;
-      --accent-glow: rgba(99, 102, 241, 0.35);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-blur: blur(20px);
-      --border-radius: 16px;
-      --font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    <style>
+        /* CSS Variables untuk ThohaDev Tools */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --radius: 16px;
+            --input-bg: rgba(0, 0, 0, 0.25);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-family);
+        html:not(.dark) {
+            --bg-color: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-color: #2563eb;
+            --input-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Glassmorphism Dynamic */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(241, 245, 249, 1);
+            border-radius: var(--radius);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+        }
+
+        .gradient-text-orange {
+            background: linear-gradient(135deg, #FF7A2F 0%, #FFB020 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ThohaDev Tools Specific Custom CSS */
+        .tools-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 1rem;
+        }
+
+        .tools-sidebar {
+            padding: 1rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .tools-sidebar ul { list-style: none; }
+        .tools-sidebar li {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.4rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .tools-sidebar li:hover, .tools-sidebar li.active {
+            background: #FF7A2F;
+            color: #ffffff;
+        }
+
+        .badge-fav {
+            background: rgba(255,255,255,0.25);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .tool-card {
+            padding: 1.25rem;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 120px;
+            transition: all 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            border-color: #FF7A2F;
+        }
+
+        .tool-card .fav-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+
+        .tool-card .fav-btn:hover { opacity: 1; transform: scale(1.1); }
+
+        .tool-workspace {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .btn-close-tool {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .btn-close-tool:hover { background: #dc2626; }
+
+        .tool-workspace textarea, 
+        .tool-workspace input[type="text"], 
+        .tool-workspace input[type="number"], 
+        .tool-workspace input[type="date"], 
+        .tool-workspace select {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.4rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .tool-workspace textarea { resize: vertical; min-height: 100px; }
+
+        .btn-action-tool {
+            padding: 0.6rem 1.2rem;
+            background: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            margin-right: 0.5rem;
+            display: inline-block;
+            font-size: 0.875rem;
+        }
+
+        .btn-action-tool:hover { background: #2563eb; }
+
+        .tool-result-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--input-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            word-break: break-all;
+        }
+
+        .flex-gap-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .grid-2-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        @media (max-width: 768px) {
+            .tools-layout { grid-template-columns: 1fr; }
+            .tools-sidebar { height: auto; position: static; }
+            .grid-2-tools { grid-template-columns: 1fr; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F1F5F9; }
+        .dark ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748B; }
+    </style>
+</head>
+<body class="bg-brand-lightBg text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased relative selection:bg-brand-blue selection:text-white transition-colors duration-300">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] bg-white dark:bg-slate-900 flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative flex items-center justify-center">
+            <div class="w-16 h-16 border-4 border-brand-blue/30 border-t-brand-orange rounded-full animate-spin"></div>
+            <span class="absolute font-bold text-lg text-slate-900 dark:text-white">MT</span>
+        </div>
+        <p class="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400 tracking-widest uppercase">Memuat Portofolio & Tools...</p>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav transition-all duration-300 py-4 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#beranda" class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2 group">
+                <span class="w-3 h-3 rounded-full bg-brand-orange group-hover:scale-125 transition-transform"></span>
+                <span>Portfolio</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600 dark:text-slate-300">
+                <a href="#beranda" class="hover:text-brand-orange transition-colors">Beranda</a>
+                <a href="#tentang" class="hover:text-brand-orange transition-colors">Tentang</a>
+                <a href="#keahlian" class="hover:text-brand-orange transition-colors">Keahlian</a>
+                <a href="#proyek" class="hover:text-brand-orange transition-colors">Proyek</a>
+                <a href="#tools" class="hover:text-brand-orange transition-colors flex items-center gap-1"><i class="fa-solid fa-wrench text-xs text-brand-orange"></i> Web Tools</a>
+                <a href="#kontak" class="hover:text-brand-orange transition-colors">Kontak</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 flex items-center justify-center hover:scale-105 transition-all" title="Ubah Mode Tampilan">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+
+                <!-- Admin Action Button -->
+                <button id="admin-action-btn" onclick="handleAdminClick()" class="px-4 py-2 bg-slate-900 dark:bg-brand-orange text-white rounded-full text-xs font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-soft hover:shadow-hover">
+                    <i class="fa-solid fa-lock" id="admin-btn-icon"></i> <span id="admin-btn-text">Admin Login</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 md:pt-32 space-y-24 md:space-y-36 max-w-7xl mx-auto px-6 md:px-12">
+
+        <!-- Hero Section -->
+        <section id="beranda" class="min-h-[80vh] flex flex-col-reverse md:flex-row items-center justify-between gap-12 pt-8">
+            <div class="flex-1 space-y-6 text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 text-brand-blue text-xs font-semibold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-brand-orange animate-ping"></span> Selamat Datang
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
+                    Halo, Saya <br/>
+                    <span class="gradient-text-orange" id="hero-name">Muhammad Thoha</span>
+                </h1>
+                <p class="text-lg font-semibold text-brand-blue" id="hero-role">
+                    Student • Web Developer • Game Developer
+                </p>
+                <p class="text-slate-600 dark:text-slate-300 max-w-xl text-base leading-relaxed" id="hero-desc">
+                    Saya adalah seorang pelajar yang memiliki minat dalam Web Development, Game Development, UI Design, Automotive, dan Artificial Intelligence. Saya senang mempelajari teknologi baru serta menciptakan proyek digital yang kreatif dan bermanfaat.
+                </p>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-4">
+                    <a href="#proyek" class="px-7 py-3.5 bg-brand-orange text-white font-semibold rounded-2xl shadow-glow-orange hover:opacity-90 hover:-translate-y-1 transition-all">
+                        Lihat Proyek
+                    </a>
+                    <a href="#tools" class="px-7 py-3.5 bg-brand-blue text-slate-900 font-semibold rounded-2xl shadow-glow-blue hover:opacity-90 hover:-translate-y-1 transition-all">
+                        Coba Client Tools
+                    </a>
+                    <a href="#kontak" class="px-7 py-3.5 bg-white dark:bg-slate-800 text-slate-800 dark:text-white font-semibold rounded-2xl border border-slate-200 dark:border-slate-700 shadow-soft hover:border-brand-blue hover:text-brand-blue hover:-translate-y-1 transition-all">
+                        Hubungi Saya
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Photo Upload Section -->
+            <div class="relative group flex flex-col items-center">
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full p-2 bg-gradient-to-tr from-brand-blue to-brand-orange shadow-2xl">
+                    <div class="w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
+                        <img id="profile-img-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Muhammad Thoha" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Camera Button -->
+                    <button onclick="document.getElementById('profile-upload-input').click()" class="absolute bottom-2 right-4 w-12 h-12 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-full flex items-center justify-center shadow-lg border border-slate-100 dark:border-slate-700 hover:bg-brand-orange hover:text-white transition-all transform group-hover:scale-110" title="Ubah Foto">
+                        <i class="fa-solid fa-camera text-lg"></i>
+                    </button>
+                    <input type="file" id="profile-upload-input" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="handleImageUpload(event)">
+                </div>
+                <button id="reset-photo-btn" onclick="resetPhoto()" class="mt-3 text-xs text-slate-400 hover:text-red-500 underline transition-colors hidden">Reset Foto Profil</button>
+            </div>
+        </section>
+
+        <!-- Tentang Saya -->
+        <section id="tentang" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Tentang Saya</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Mengenal lebih dekat siapa saya dan apa minat saya</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 shadow-soft hover:shadow-hover transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-slate-800 text-brand-blue flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Informasi Utama</h3>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                        <li><span class="font-semibold text-slate-800 dark:text-slate-200">Nama:</span> <span id="about-name">Muhammad Thoha</span></li>
+                        <li><span class="font-semibold text-slate-800 dark:text-slate-200">Status:</span> <span id="about-status">Student</span></li>
+                        <li><span class="font-semibold text-slate-800 dark:text-slate-200">Lokasi:</span> <span id="about-location">Indonesia</span></li>
+                    </ul>
+                </div>
+
+                <div class="glass-card p-8 shadow-soft hover:shadow-hover transition-all md:col-span-2">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-slate-800 text-brand-orange flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Minat & Hobi</h3>
+                    <div class="flex flex-wrap gap-3" id="interests-container">
+                        <span class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-medium">Coding</span>
+                        <span class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-medium">Game Development</span>
+                        <span class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-medium">Automotive</span>
+                        <span class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-medium">Artificial Intelligence</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Keahlian -->
+        <section id="keahlian" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Keahlian Utama</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Bidang teknologi dan keahlian yang sedang saya tekuni</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="skills-container"></div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Tech Stack & Tools</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Perangkat lunak dan bahasa yang biasa saya gunakan</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4" id="tech-container"></div>
+        </section>
+
+        <!-- Proyek -->
+        <section id="proyek" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Proyek Unggulan</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Karya dan proyek yang telah saya selesaikan</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="projects-container"></div>
+        </section>
+
+        <!-- SECTION: THOHADEV TOOLS -->
+        <section id="tools" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                    🛠️ <span>ThohaDev</span> Tools
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Kumpulan 25+ Client-Side Web Utilities serbaguna dan offline-ready</p>
+            </div>
+
+            <!-- Header Search Engine Tools -->
+            <div class="glass-card p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Cari & Jalankan Tools Langsung di Browser
+                </div>
+                <div class="w-full sm:w-auto">
+                    <input type="text" id="searchInput" placeholder="Cari tool (misal: JSON, Word Counter)..." oninput="handleSearch()" class="w-full sm:w-80 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-900 dark:text-white outline-none text-sm focus:ring-2 focus:ring-brand-blue">
+                </div>
+            </div>
+
+            <!-- Tools Layout Container -->
+            <div class="tools-layout">
+                <!-- Sidebar Category Nav -->
+                <aside class="glass-card tools-sidebar">
+                    <nav>
+                        <ul id="categoryList">
+                            <li class="active" onclick="switchCategory('all', this)">🌐 Semua Tool</li>
+                            <li onclick="switchCategory('fav', this)">❤️ Favorit <span class="badge-fav" id="favCount">0</span></li>
+                            <li onclick="switchCategory('text', this)">📝 Text Tools</li>
+                            <li onclick="switchCategory('dev', this)">💻 Dev Tools</li>
+                            <li onclick="switchCategory('color', this)">🎨 Color Tools</li>
+                            <li onclick="switchCategory('calc', this)">🧮 Calculator</li>
+                            <li onclick="switchCategory('security', this)">🔐 Security</li>
+                            <li onclick="switchCategory('utility', this)">🌐 Utility & QR</li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Tools Main Content Area -->
+                <div class="tools-main">
+                    <!-- Tool Active Workspace -->
+                    <section id="toolWorkspace" class="glass-card tool-workspace" style="display: none;">
+                        <button class="btn-close-tool" onclick="closeWorkspace()">✕ Tutup Tool</button>
+                        <h3 id="activeToolTitle" class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Judul Tool</h3>
+                        <div id="activeToolContainer"></div>
+                    </section>
+
+                    <!-- Tools Grid Area -->
+                    <section id="toolsGridSection">
+                        <h3 id="categoryTitle" class="text-lg font-bold mb-4 text-slate-900 dark:text-white">Semua Tool</h3>
+                        <div class="tools-grid" id="toolsGrid"></div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pengalaman & Pendidikan -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Pengalaman -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                    <i class="fa-solid fa-briefcase text-brand-orange"></i> Pengalaman
+                </h2>
+                <div class="border-l-2 border-slate-200 dark:border-slate-700 pl-6 space-y-6" id="experience-container"></div>
+            </section>
+
+            <!-- Pendidikan -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                    <i class="fa-solid fa-graduation-cap text-brand-blue"></i> Pendidikan
+                </h2>
+                <div class="space-y-4" id="education-container"></div>
+            </section>
+        </div>
+
+        <!-- Contact Me -->
+        <section id="kontak" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Hubungi Saya</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Terhubung secara langsung melalui platform favorit Anda</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- WhatsApp -->
+                <div class="glass-card p-8 text-center space-y-4 border-emerald-100 dark:border-slate-700 hover:border-emerald-300 transition-all shadow-soft">
+                    <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-full flex items-center justify-center text-2xl mx-auto">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">WhatsApp</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">082149570324</p>
+                    </div>
+                    <a href="https://wa.me/6282149570324?text=Halo%20Muhammad%20Thoha!%0ASaya%20melihat%20portofolio%20Anda%20dan%20tertarik%20untuk%20menghubungi%20Anda." target="_blank" class="inline-block w-full py-3 bg-emerald-500 text-white font-medium text-sm rounded-xl hover:bg-emerald-600 transition-colors">
+                        Hubungi via WhatsApp
+                    </a>
+                </div>
+
+                <!-- Email -->
+                <div class="glass-card p-8 text-center space-y-4 border-rose-100 dark:border-slate-700 hover:border-rose-300 transition-all shadow-soft">
+                    <div class="w-14 h-14 bg-rose-50 dark:bg-rose-950/40 text-rose-500 rounded-full flex items-center justify-center text-2xl mx-auto">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">Email</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">tho996633@gmail.com</p>
+                    </div>
+                    <a href="mailto:tho996633@gmail.com?subject=Halo%20Muhammad%20Thoha&body=Halo%20Muhammad%20Thoha,%0A%0ASaya%20melihat%20portofolio%20Anda%20dan%20tertarik%20untuk%20menghubungi%20Anda.%0A%0ATerima%20kasih." class="inline-block w-full py-3 bg-rose-500 text-white font-medium text-sm rounded-xl hover:bg-rose-600 transition-colors">
+                        Kirim Email
+                    </a>
+                </div>
+
+                <!-- Instagram -->
+                <div class="glass-card p-8 text-center space-y-4 border-purple-100 dark:border-slate-700 hover:border-purple-300 transition-all shadow-soft">
+                    <div class="w-14 h-14 bg-purple-50 dark:bg-purple-950/40 text-pink-500 rounded-full flex items-center justify-center text-2xl mx-auto">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">Instagram</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">@toh_moon</p>
+                    </div>
+                    <a href="https://www.instagram.com/toh_moon?igsh=MWpkbzgwbGJxcHp1" target="_blank" class="inline-block w-full py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white font-medium text-sm rounded-xl hover:opacity-90 transition-opacity">
+                        Kunjungi Instagram
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Let's Work Together -->
+        <section class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-10 md:p-16 text-center space-y-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-24 -left-24 w-60 h-60 bg-brand-blue/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-brand-orange/20 rounded-full blur-3xl"></div>
+
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight relative z-10">Mari Berkolaborasi!</h2>
+            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed relative z-10">
+                Saya selalu terbuka untuk berdiskusi, belajar hal baru, maupun berkolaborasi dalam proyek yang menarik. Jangan ragu untuk menghubungi saya melalui WhatsApp, Email, atau Instagram.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 relative z-10 pt-4">
+                <a href="https://wa.me/6282149570324" target="_blank" class="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-2xl hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
+                </a>
+                <a href="mailto:tho996633@gmail.com" class="px-6 py-3 bg-rose-500 text-white font-semibold rounded-2xl hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-lg"></i> Email
+                </a>
+                <a href="https://www.instagram.com/toh_moon?igsh=MWpkbzgwbGJxcHp1" target="_blank" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-2xl hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="fa-brands fa-instagram text-lg"></i> Instagram
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-24 py-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-sm">
+        <p>© 2026 Muhammad Thoha. All rights reserved.</p>
+    </footer>
+
+    <!-- Floating Contact Button -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+        <div id="floating-menu" class="flex flex-col gap-3 transition-all duration-300 opacity-0 scale-95 pointer-events-none">
+            <a href="https://wa.me/6282149570324" target="_blank" class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-all group relative">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                <span class="absolute right-14 bg-slate-900 text-white text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">WhatsApp</span>
+            </a>
+            <a href="mailto:tho996633@gmail.com" class="w-12 h-12 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-all group relative">
+                <i class="fa-solid fa-envelope text-xl"></i>
+                <span class="absolute right-14 bg-slate-900 text-white text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Email</span>
+            </a>
+            <a href="https://www.instagram.com/toh_moon?igsh=MWpkbzgwbGJxcHp1" target="_blank" class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-all group relative">
+                <i class="fa-brands fa-instagram text-xl"></i>
+                <span class="absolute right-14 bg-slate-900 text-white text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Instagram</span>
+            </a>
+        </div>
+        <button onclick="toggleFloatingMenu()" class="w-14 h-14 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-glow-orange hover:scale-105 transition-all text-xl">
+            <i class="fa-solid fa-comments"></i>
+        </button>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-3xl shadow-2xl p-6 space-y-6">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-brand-orange"></i> Login Admin
+                </h3>
+                <button onclick="toggleLoginModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Password Admin</label>
+                    <input type="password" id="admin-password-input" placeholder="Masukkan password admin" class="w-full p-3 border dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                </div>
+                <p id="login-error-msg" class="text-xs text-rose-500 font-medium hidden">Password salah! Silakan coba lagi.</p>
+                <button type="submit" class="w-full py-3 bg-brand-orange text-white font-semibold rounded-xl hover:opacity-90 transition-all text-sm">
+                    Masuk ke Mode Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal (Edit Portofolio) -->
+    <div id="dashboard-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-sliders text-brand-orange text-xl"></i>
+                    <h3 class="font-bold text-lg">Dashboard Edit Portofolio</h3>
+                </div>
+                <button onclick="toggleDashboard()" class="text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Tabs) -->
+            <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+                <!-- Sidebar Tabs -->
+                <div class="w-full md:w-1/4 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 p-4 space-y-1 overflow-y-auto">
+                    <button onclick="switchTab('tab-info')" class="tab-btn w-full text-left px-4 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 active-tab">Info Pribadi</button>
+                    <button onclick="switchTab('tab-skills')" class="tab-btn w-full text-left px-4 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800">Keahlian</button>
+                    <button onclick="switchTab('tab-projects')" class="tab-btn w-full text-left px-4 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800">Proyek</button>
+                </div>
+
+                <!-- Tab Content Panels -->
+                <div class="flex-1 p-6 overflow-y-auto space-y-6 text-slate-900 dark:text-white">
+
+                    <!-- Tab Info Pribadi -->
+                    <div id="tab-info" class="tab-content space-y-4">
+                        <h4 class="font-bold border-b dark:border-slate-700 pb-2">Edit Informasi Utama</h4>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nama Lengkap</label>
+                            <input type="text" id="edit-name" class="w-full p-3 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Status</label>
+                            <input type="text" id="edit-status" class="w-full p-3 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Deskripsi Singkat</label>
+                            <textarea id="edit-desc" rows="3" class="w-full p-3 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue outline-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tab Keahlian -->
+                    <div id="tab-skills" class="tab-content space-y-4 hidden">
+                        <h4 class="font-bold border-b dark:border-slate-700 pb-2">Kelola Keahlian</h4>
+                        <div id="skills-edit-list" class="space-y-3"></div>
+                        <button onclick="addSkill()" class="px-4 py-2 bg-brand-blue text-white rounded-xl text-xs font-bold">+ Tambah Keahlian</button>
+                    </div>
+
+                    <!-- Tab Proyek -->
+                    <div id="tab-projects" class="tab-content space-y-4 hidden">
+                        <h4 class="font-bold border-b dark:border-slate-700 pb-2">Kelola Proyek</h4>
+                        <div id="projects-edit-list" class="space-y-4"></div>
+                        <button onclick="addProject()" class="px-4 py-2 bg-brand-orange text-white rounded-xl text-xs font-bold">+ Tambah Proyek</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
+                <button onclick="toggleDashboard()" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium text-xs">Batal</button>
+                <button onclick="saveDashboardData()" class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-brand-orange text-white font-medium text-xs hover:opacity-90">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Combined JavaScript Engine -->
+    <script>
+        /* ==========================================================================
+           1. PORTFOLIO ENGINE & STATE
+           ========================================================================== */
+        let isAdminLoggedIn = false;
+
+        const defaultData = {
+            name: "Muhammad Thoha",
+            status: "Student",
+            location: "Indonesia",
+            role: "Student • Web Developer • Game Developer",
+            desc: "Saya adalah seorang pelajar yang memiliki minat dalam Web Development, Game Development, UI Design, Automotive, dan Artificial Intelligence. Saya senang mempelajari teknologi baru serta menciptakan proyek digital yang kreatif dan bermanfaat.",
+            skills: [
+                { name: "Web Development", level: 85, icon: "💻" },
+                { name: "Game Development", level: 75, icon: "🎮" },
+                { name: "UI Design", level: 80, icon: "🎨" },
+                { name: "AI Prompt Engineering", level: 90, icon: "🤖" },
+                { name: "Automotive", level: 70, icon: "🚗" }
+            ],
+            techStack: [
+                { name: "HTML", icon: "fa-brands fa-html5 text-orange-500" },
+                { name: "CSS", icon: "fa-brands fa-css3-alt text-blue-500" },
+                { name: "JavaScript", icon: "fa-brands fa-js text-yellow-400" },
+                { name: "PHP", icon: "fa-brands fa-php text-indigo-500" },
+                { name: "MySQL", icon: "fa-solid fa-database text-blue-600" },
+                { name: "Git", icon: "fa-brands fa-git-alt text-orange-600" },
+                { name: "VS Code", icon: "fa-solid fa-code text-sky-500" },
+                { name: "Figma", icon: "fa-brands fa-figma text-pink-500" }
+            ],
+            projects: [
+                {
+                    title: "Web App Portofolio",
+                    desc: "Website portofolio interaktif dan modern dengan fitur dashboard kustomisasi real-time.",
+                    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+                    link: "#"
+                },
+                {
+                    title: "2D Indie Game Concept",
+                    desc: "Proyek pengembangan game 2D bertema petualangan menggunakan Unity engine.",
+                    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+                    link: "#"
+                },
+                {
+                    title: "UI Concept Automotive Dashboard",
+                    desc: "Desain antarmuka pengguna modern untuk konsol kendaraan pintar.",
+                    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+                    link: "#"
+                },
+                {
+                    title: "AI Prompt Assistant Tool",
+                    desc: "Alat bantu pembuatan prompt terstruktur untuk produktivitas AI.",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80",
+                    link: "#"
+                }
+            ],
+            experiences: [
+                { title: "Frontend Personal Projects", desc: "Mengembangkan berbagai proyek website interaktif menggunakan HTML, CSS, JavaScript, dan Tailwind CSS." },
+                { title: "UI Design Practice", desc: "Eksplorasi antarmuka aplikasi modern dan sistem desain menggunakan Figma." },
+                { title: "Self-learning Programming", desc: "Mempelajari logika pemrograman, struktur data, serta AI Prompt Engineering secara otodidak." },
+                { title: "School Projects", desc: "Berkontribusi dalam proyek-proyek berbasis teknologi di lingkungan sekolah." }
+            ],
+            education: [
+                { school: "MAN 1 Barito Utara", status: "Pelajar Active" }
+            ]
+        };
+
+        let appData = JSON.parse(localStorage.getItem('portfolio_data')) || defaultData;
+
+        // Theme Toggle Logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.setAttribute('data-theme', 'dark');
+                updateThemeIcon(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.setAttribute('data-theme', 'light');
+                updateThemeIcon(false);
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const themeStr = isDark ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', themeStr);
+            localStorage.setItem('theme', themeStr);
+            updateThemeIcon(isDark);
+        }
+
+        function updateThemeIcon(isDark) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.className = isDark ? "fa-solid fa-sun text-lg" : "fa-solid fa-moon text-lg";
+            }
+        }
+
+        // Admin Modal Logic
+        function handleAdminClick() {
+            if (!isAdminLoggedIn) {
+                toggleLoginModal();
+            } else {
+                toggleDashboard();
+            }
+        }
+
+        function toggleLoginModal() {
+            const modal = document.getElementById('admin-login-modal');
+            modal.classList.toggle('hidden');
+            document.getElementById('login-error-msg').classList.add('hidden');
+            document.getElementById('admin-password-input').value = '';
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('admin-password-input').value;
+            if (password === 'thoha123' || password === 'admin') {
+                isAdminLoggedIn = true;
+                updateAdminUI();
+                toggleLoginModal();
+                toggleDashboard();
+            } else {
+                document.getElementById('login-error-msg').classList.remove('hidden');
+            }
+        }
+
+        function updateAdminUI() {
+            const btnIcon = document.getElementById('admin-btn-icon');
+            const btnText = document.getElementById('admin-btn-text');
+            if (isAdminLoggedIn) {
+                btnIcon.className = "fa-solid fa-pen-to-square";
+                btnText.innerText = "Edit Portofolio";
+            } else {
+                btnIcon.className = "fa-solid fa-lock";
+                btnText.innerText = "Admin Login";
+            }
+        }
+
+        // Render Page Data
+        function renderPage() {
+            document.getElementById('hero-name').innerText = appData.name;
+            document.getElementById('about-name').innerText = appData.name;
+            document.getElementById('hero-role').innerText = appData.role;
+            document.getElementById('hero-desc').innerText = appData.desc;
+            document.getElementById('about-status').innerText = appData.status;
+
+            // Render Skills
+            const skillsContainer = document.getElementById('skills-container');
+            skillsContainer.innerHTML = appData.skills.map(s => `
+                <div class="glass-card p-6 shadow-soft hover:shadow-hover transition-all">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-2xl">${s.icon}</span>
+                        <span class="text-xs font-bold text-slate-400">${s.level}%</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-sm mb-2">${s.name}</h4>
+                    <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-brand-blue to-brand-orange h-full rounded-full transition-all duration-1000" style="width: ${s.level}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Tech Stack
+            const techContainer = document.getElementById('tech-container');
+            techContainer.innerHTML = appData.techStack.map(t => `
+                <div class="glass-card p-4 flex flex-col items-center justify-center gap-2 hover:-translate-y-2 transition-transform shadow-soft">
+                    <i class="${t.icon} text-3xl"></i>
+                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">${t.name}</span>
+                </div>
+            `).join('');
+
+            // Render Projects
+            const projectsContainer = document.getElementById('projects-container');
+            projectsContainer.innerHTML = appData.projects.map((p, index) => `
+                <div class="glass-card overflow-hidden shadow-soft hover:shadow-hover transition-all group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">${p.title}</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">${p.desc}</p>
+                        <a href="${p.link}" class="inline-flex items-center gap-2 text-xs font-bold text-brand-orange hover:gap-3 transition-all pt-2">
+                            Lihat Proyek <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Experience
+            const expContainer = document.getElementById('experience-container');
+            expContainer.innerHTML = appData.experiences.map(e => `
+                <div class="relative pl-2">
+                    <span class="absolute -left-[31px] top-1.5 w-3 h-3 bg-brand-orange rounded-full ring-4 ring-orange-100 dark:ring-slate-800"></span>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-sm">${e.title}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${e.desc}</p>
+                </div>
+            `).join('');
+
+            // Render Education
+            const eduContainer = document.getElementById('education-container');
+            eduContainer.innerHTML = appData.education.map(e => `
+                <div class="glass-card p-6 border-l-4 border-brand-blue shadow-soft">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">${e.school}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Status: ${e.status}</p>
+                </div>
+            `).join('');
+
+            // Load Saved Profile Image
+            const savedImg = localStorage.getItem('profile_image');
+            if (savedImg) {
+                document.getElementById('profile-img-preview').src = savedImg;
+                document.getElementById('reset-photo-btn').classList.remove('hidden');
+            }
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const base64Img = evt.target.result;
+                    document.getElementById('profile-img-preview').src = base64Img;
+                    localStorage.setItem('profile_image', base64Img);
+                    document.getElementById('reset-photo-btn').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function resetPhoto() {
+            localStorage.removeItem('profile_image');
+            document.getElementById('profile-img-preview').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80";
+            document.getElementById('reset-photo-btn').classList.add('hidden');
+        }
+
+        let isFloatingOpen = false;
+        function toggleFloatingMenu() {
+            const menu = document.getElementById('floating-menu');
+            isFloatingOpen = !isFloatingOpen;
+            if (isFloatingOpen) {
+                menu.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                menu.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+            } else {
+                menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+                menu.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+            }
+        }
+
+        // Dashboard Logic
+        function toggleDashboard() {
+            const modal = document.getElementById('dashboard-modal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) {
+                document.getElementById('edit-name').value = appData.name;
+                document.getElementById('edit-status').value = appData.status;
+                document.getElementById('edit-desc').value = appData.desc;
+                renderDashboardLists();
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('bg-slate-200', 'dark:bg-slate-800', 'font-bold'));
+            document.getElementById(tabId).classList.remove('hidden');
+            event.target.classList.add('bg-slate-200', 'dark:bg-slate-800', 'font-bold');
+        }
+
+        function renderDashboardLists() {
+            const skillsEditList = document.getElementById('skills-edit-list');
+            skillsEditList.innerHTML = appData.skills.map((s, i) => `
+                <div class="flex items-center gap-2 border dark:border-slate-700 p-2 rounded-xl">
+                    <input type="text" value="${s.name}" onchange="appData.skills[${i}].name=this.value" class="p-1 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded text-xs flex-1">
+                    <input type="number" value="${s.level}" onchange="appData.skills[${i}].level=this.value" class="p-1 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded text-xs w-16">
+                    <button onclick="appData.skills.splice(${i},1); renderDashboardLists();" class="text-red-500 text-xs px-2">Hapus</button>
+                </div>
+            `).join('');
+
+            const projectsEditList = document.getElementById('projects-edit-list');
+            projectsEditList.innerHTML = appData.projects.map((p, i) => `
+                <div class="space-y-2 border dark:border-slate-700 p-3 rounded-xl">
+                    <input type="text" value="${p.title}" onchange="appData.projects[${i}].title=this.value" class="w-full p-1 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded text-xs font-bold" placeholder="Judul Proyek">
+                    <input type="text" value="${p.image}" onchange="appData.projects[${i}].image=this.value" class="w-full p-1 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded text-xs" placeholder="URL Gambar">
+                    <textarea onchange="appData.projects[${i}].desc=this.value" class="w-full p-1 border dark:border-slate-700 bg-white dark:bg-slate-900 rounded text-xs" placeholder="Deskripsi">${p.desc}</textarea>
+                    <button onclick="appData.projects.splice(${i},1); renderDashboardLists();" class="text-red-500 text-xs">Hapus Proyek</button>
+                </div>
+            `).join('');
+        }
+
+        function addSkill() {
+            appData.skills.push({ name: "Keahlian Baru", level: 80, icon: "⚡" });
+            renderDashboardLists();
+        }
+
+        function addProject() {
+            appData.projects.push({ title: "Proyek Baru", desc: "Deskripsi singkat proyek.", image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80", link: "#" });
+            renderDashboardLists();
+        }
+
+        function saveDashboardData() {
+            appData.name = document.getElementById('edit-name').value;
+            appData.status = document.getElementById('edit-status').value;
+            appData.desc = document.getElementById('edit-desc').value;
+
+            localStorage.setItem('portfolio_data', JSON.stringify(appData));
+            renderPage();
+            toggleDashboard();
+        }
+
+        /* ==========================================================================
+           2. THOHADEV TOOLS ENGINE & MODULES
+           ========================================================================== */
+        const toolsData = [
+            // Text Tools
+            { id: 'word-counter', name: 'Word Counter', category: 'text', icon: '📝', desc: 'Hitung kata, karakter, dan kalimat.' },
+            { id: 'text-case', name: 'Text Case Converter', category: 'text', icon: '🔠', desc: 'Ubah teks ke UPPER, lower, Title Case.' },
+            { id: 'remove-spaces', name: 'Remove Extra Spaces', category: 'text', icon: '🧹', desc: 'Hapus spasi ganda & spasi berlebih.' },
+            { id: 'text-repeater', name: 'Text Repeater', category: 'text', icon: '🔁', desc: 'Ulangi teks sebanyak N kali.' },
+            { id: 'lorem-gen', name: 'Lorem Ipsum Generator', category: 'text', icon: '📄', desc: 'Buat teks dummy Lorem Ipsum.' },
+            { id: 'reverse-text', name: 'Reverse Text', category: 'text', icon: '🔄', desc: 'Membalikkan urutan teks.' },
+            
+            // Dev Tools
+            { id: 'json-formatter', name: 'JSON Formatter', category: 'dev', icon: '💻', desc: 'Format & Validasi struktur JSON.' },
+            { id: 'base64-tool', name: 'Base64 Encode/Decode', category: 'dev', icon: '🔑', desc: 'Encode dan decode teks Base64.' },
+            { id: 'url-encoder', name: 'URL Encode/Decode', category: 'dev', icon: '🔗', desc: 'Encode dan decode URL string.' },
+            { id: 'html-escape', name: 'HTML Escape/Unescape', category: 'dev', icon: '🏷️', desc: 'Escape karakter spesial HTML.' },
+            { id: 'uuid-gen', name: 'UUID Generator', category: 'dev', icon: '🆔', desc: 'Generate UUID v4 unik secara acak.' },
+            
+            // Color Tools
+            { id: 'hex-rgb', name: 'HEX ↔ RGB Converter', category: 'color', icon: '🎨', desc: 'Konversi kode warna HEX dan RGB.' },
+            { id: 'gradient-gen', name: 'Gradient Generator', category: 'color', icon: '🌈', desc: 'Buat kode CSS Gradient visual.' },
+            { id: 'color-picker', name: 'Color Picker Tool', category: 'color', icon: '🖌️', desc: 'Pilih dan dapatkan kode warna.' },
+
+            // Calculators
+            { id: 'bmi-calc', name: 'BMI Calculator', category: 'calc', icon: '⚖️', desc: 'Hitung Indeks Massa Tubuh (BMI).' },
+            { id: 'discount-calc', name: 'Discount Calculator', category: 'calc', icon: '🏷️', desc: 'Hitung potongan harga & diskon.' },
+            { id: 'age-calc', name: 'Age Calculator', category: 'calc', icon: '🎂', desc: 'Hitung umur tepat dari tanggal lahir.' },
+            { id: 'percentage-calc', name: 'Percentage Calculator', category: 'calc', icon: '📊', desc: 'Kalkulator perhitungan persentase.' },
+
+            // Security
+            { id: 'pass-gen', name: 'Password Generator', category: 'security', icon: '🔐', desc: 'Buat password acak super aman.' },
+            { id: 'pin-gen', name: 'PIN Generator', category: 'security', icon: '🔢', desc: 'Generate angka PIN acak.' },
+            { id: 'hash-gen', name: 'Hash Generator (SHA-256)', category: 'security', icon: '🛡️', desc: 'Generate hash enkripsi SHA-256.' },
+
+            // Utility & Other
+            { id: 'qr-gen', name: 'QR Code Generator', category: 'utility', icon: '📱', desc: 'Buat QR Code dari Teks / URL.' },
+            { id: 'barcode-gen', name: 'Barcode Generator', category: 'utility', icon: '📊', desc: 'Generate Barcode CODE128.' },
+            { id: 'unit-length', name: 'Unit Converter (Panjang)', category: 'calc', icon: '📏', desc: 'Konversi Meter, KM, Inch, Feet.' },
+            { id: 'stopwatch', name: 'Stopwatch', category: 'utility', icon: '⏱️', desc: 'Penghitung waktu stopwatch.' }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('thoha_favs') || '[]');
+        let currentCategory = 'all';
+
+        function renderTools(filterQuery = '') {
+            const grid = document.getElementById('toolsGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            const filtered = toolsData.filter(tool => {
+                const matchesCat = currentCategory === 'all' || 
+                    (currentCategory === 'fav' ? favorites.includes(tool.id) : tool.category === currentCategory);
+                const matchesSearch = tool.name.toLowerCase().includes(filterQuery.toLowerCase()) || 
+                                      tool.desc.toLowerCase().includes(filterQuery.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            if(filtered.length === 0) {
+                grid.innerHTML = '<p class="text-slate-500 dark:text-slate-400 col-span-full">Tidak ada tool yang ditemukan.</p>';
+                return;
+            }
+
+            filtered.forEach(tool => {
+                const isFav = favorites.includes(tool.id);
+                const card = document.createElement('div');
+                card.className = 'glass-card tool-card';
+                card.innerHTML = `
+                    <button class="fav-btn" onclick="toggleFav(event, '${tool.id}')">${isFav ? '❤️' : '🤍'}</button>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white">${tool.icon} ${tool.name}</h4>
+                        <p style="font-size: 0.85rem;" class="text-slate-500 dark:text-slate-400 mt-1">${tool.desc}</p>
+                    </div>
+                `;
+                card.onclick = (e) => {
+                    if(!e.target.classList.contains('fav-btn')) openTool(tool.id);
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleFav(e, id) {
+            e.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('thoha_favs', JSON.stringify(favorites));
+            updateFavCount();
+            renderTools();
+        }
+
+        function updateFavCount() {
+            const countEl = document.getElementById('favCount');
+            if(countEl) countEl.innerText = favorites.length;
+        }
+
+        function switchCategory(cat, el) {
+            currentCategory = cat;
+            document.querySelectorAll('#categoryList li').forEach(li => li.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('categoryTitle').innerText = el.innerText.split('\n')[0];
+            renderTools();
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            renderTools(query);
+        }
+
+        function openTool(toolId) {
+            const workspace = document.getElementById('toolWorkspace');
+            const container = document.getElementById('activeToolContainer');
+            const title = document.getElementById('activeToolTitle');
+            const tool = toolsData.find(t => t.id === toolId);
+
+            title.innerText = `${tool.icon} ${tool.name}`;
+            container.innerHTML = '';
+            workspace.style.display = 'block';
+
+            workspace.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            switch(toolId) {
+                case 'word-counter': loadWordCounter(container); break;
+                case 'text-case': loadTextCase(container); break;
+                case 'remove-spaces': loadRemoveSpaces(container); break;
+                case 'text-repeater': loadTextRepeater(container); break;
+                case 'lorem-gen': loadLoremGen(container); break;
+                case 'reverse-text': loadReverseText(container); break;
+                case 'json-formatter': loadJsonFormatter(container); break;
+                case 'base64-tool': loadBase64Tool(container); break;
+                case 'url-encoder': loadUrlEncoder(container); break;
+                case 'html-escape': loadHtmlEscape(container); break;
+                case 'uuid-gen': loadUuidGen(container); break;
+                case 'hex-rgb': loadHexRgb(container); break;
+                case 'gradient-gen': loadGradientGen(container); break;
+                case 'color-picker': loadColorPicker(container); break;
+                case 'bmi-calc': loadBmiCalc(container); break;
+                case 'discount-calc': loadDiscountCalc(container); break;
+                case 'age-calc': loadAgeCalc(container); break;
+                case 'percentage-calc': loadPercentageCalc(container); break;
+                case 'pass-gen': loadPassGen(container); break;
+                case 'pin-gen': loadPinGen(container); break;
+                case 'hash-gen': loadHashGen(container); break;
+                case 'qr-gen': loadQrGen(container); break;
+                case 'barcode-gen': loadBarcodeGen(container); break;
+                case 'unit-length': loadUnitLength(container); break;
+                case 'stopwatch': loadStopwatch(container); break;
+                default: container.innerHTML = '<p>Modul tool ini siap dikembangkan!</p>';
+            }
+        }
+
+        function closeWorkspace() {
+            document.getElementById('toolWorkspace').style.display = 'none';
+        }
+
+        // TOOL MODULE FUNCTIONS
+        function loadWordCounter(p) {
+            p.innerHTML = `
+                <textarea id="tcInput" rows="6" placeholder="Ketik atau paste teks di sini..."></textarea>
+                <div class="flex-gap-tools" style="margin-top: 0.5rem; font-weight: bold;">
+                    <div class="tool-result-box">Kata: <span id="wCount">0</span></div>
+                    <div class="tool-result-box">Karakter: <span id="cCount">0</span></div>
+                    <div class="tool-result-box">Kalimat: <span id="sCount">0</span></div>
+                </div>
+            `;
+            document.getElementById('tcInput').oninput = (e) => {
+                const val = e.target.value;
+                document.getElementById('cCount').innerText = val.length;
+                document.getElementById('wCount').innerText = val.trim() ? val.trim().split(/\s+/).length : 0;
+                document.getElementById('sCount').innerText = val.trim() ? val.split(/[.!?]+/).filter(Boolean).length : 0;
+            };
+        }
+
+        function loadTextCase(p) {
+            p.innerHTML = `
+                <textarea id="caseInput" rows="5" placeholder="Masukkan teks..."></textarea>
+                <div class="flex-gap-tools">
+                    <button class="btn-action-tool" onclick="document.getElementById('caseInput').value = document.getElementById('caseInput').value.toUpperCase()">UPPERCASE</button>
+                    <button class="btn-action-tool" onclick="document.getElementById('caseInput').value = document.getElementById('caseInput').value.toLowerCase()">lowercase</button>
+                    <button class="btn-action-tool" onclick="document.getElementById('caseInput').value = document.getElementById('caseInput').value.toLowerCase().replace(/(?:^|\\s)\\w/g, m => m.toUpperCase())">Title Case</button>
+                </div>
+            `;
+        }
+
+        function loadRemoveSpaces(p) {
+            p.innerHTML = `
+                <textarea id="spInput" rows="5" placeholder="Teks dengan banyak  spasi    berlebih..."></textarea>
+                <button class="btn-action-tool" onclick="document.getElementById('spInput').value = document.getElementById('spInput').value.replace(/\\s+/g, ' ').trim()">Bersihkan Spasi</button>
+            `;
+        }
+
+        function loadTextRepeater(p) {
+            p.innerHTML = `
+                <input type="text" id="rpText" placeholder="Teks yang ingin diulang">
+                <input type="number" id="rpCount" value="5" min="1" max="1000" placeholder="Jumlah ulangan">
+                <button class="btn-action-tool" onclick="let t=document.getElementById('rpText').value, c=document.getElementById('rpCount').value; document.getElementById('rpRes').value = (t+'\\n').repeat(c);">Ulangi Teks</button>
+                <textarea id="rpRes" rows="5" readonly style="margin-top:1rem;"></textarea>
+            `;
+        }
+
+        function loadLoremGen(p) {
+            p.innerHTML = `
+                <button class="btn-action-tool" onclick="document.getElementById('loremRes').value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'">Generate Lorem Ipsum</button>
+                <textarea id="loremRes" rows="5" readonly style="margin-top:1rem;"></textarea>
+            `;
+        }
+
+        function loadReverseText(p) {
+            p.innerHTML = `
+                <textarea id="revInput" rows="5" placeholder="Masukkan teks..."></textarea>
+                <button class="btn-action-tool" onclick="document.getElementById('revInput').value = document.getElementById('revInput').value.split('').reverse().join('')">Balikkan Teks</button>
+            `;
+        }
+
+        function loadJsonFormatter(p) {
+            p.innerHTML = `
+                <textarea id="jsonInput" rows="8" placeholder="Paste JSON mentah di sini..."></textarea>
+                <button class="btn-action-tool" onclick="try{ document.getElementById('jsonInput').value = JSON.stringify(JSON.parse(document.getElementById('jsonInput').value), null, 2); }catch(e){ alert('JSON Tidak Valid!'); }">Format / Rapikan JSON</button>
+            `;
+        }
+
+        function loadBase64Tool(p) {
+            p.innerHTML = `
+                <textarea id="b64Input" rows="5" placeholder="Teks Tipe..."></textarea>
+                <button class="btn-action-tool" onclick="document.getElementById('b64Input').value = btoa(document.getElementById('b64Input').value)">Encode to Base64</button>
+                <button class="btn-action-tool" onclick="try{ document.getElementById('b64Input').value = atob(document.getElementById('b64Input').value) }catch(e){ alert('Base64 tidak valid!'); }">Decode Base64</button>
+            `;
+        }
+
+        function loadUrlEncoder(p) {
+            p.innerHTML = `
+                <textarea id="urlInput" rows="5" placeholder="Masukkan URL / String..."></textarea>
+                <button class="btn-action-tool" onclick="document.getElementById('urlInput').value = encodeURIComponent(document.getElementById('urlInput').value)">Encode URL</button>
+                <button class="btn-action-tool" onclick="document.getElementById('urlInput').value = decodeURIComponent(document.getElementById('urlInput').value)">Decode URL</button>
+            `;
+        }
+
+        function loadHtmlEscape(p) {
+            p.innerHTML = `
+                <textarea id="escInput" rows="5" placeholder="<div>Teks HTML</div>"></textarea>
+                <button class="btn-action-tool" onclick="document.getElementById('escInput').value = document.getElementById('escInput').value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')">Escape HTML</button>
+            `;
+        }
+
+        function loadUuidGen(p) {
+            p.innerHTML = `
+                <div class="tool-result-box" id="uuidRes" style="font-weight:bold; font-size:1.1rem;">-</div>
+                <button class="btn-action-tool" onclick="document.getElementById('uuidRes').innerText = crypto.randomUUID()">Generate New UUID</button>
+            `;
+        }
+
+        function loadHexRgb(p) {
+            p.innerHTML = `
+                <input type="text" id="hexVal" value="#3b82f6" placeholder="#3b82f6">
+                <button class="btn-action-tool" onclick="
+                    let hex = document.getElementById('hexVal').value.replace('#','');
+                    let r = parseInt(hex.substring(0,2), 16), g = parseInt(hex.substring(2,4), 16), b = parseInt(hex.substring(4,6), 16);
+                    document.getElementById('hexRes').innerText = 'RGB: ' + r + ', ' + g + ', ' + b;
+                ">Konversi ke RGB</button>
+                <div class="tool-result-box" id="hexRes">RGB: 59, 130, 246</div>
+            `;
+        }
+
+        function loadGradientGen(p) {
+            p.innerHTML = `
+                <div class="grid-2-tools">
+                    <div>
+                        <label class="text-xs font-semibold">Warna 1</label>
+                        <input type="color" id="gColor1" value="#3b82f6" class="h-10 cursor-pointer">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold">Warna 2</label>
+                        <input type="color" id="gColor2" value="#ef4444" class="h-10 cursor-pointer">
+                    </div>
+                </div>
+                <div id="gradPreview" style="height: 100px; border-radius: 8px; margin-top: 1rem; background: linear-gradient(90deg, #3b82f6, #ef4444);"></div>
+                <div class="tool-result-box" id="gradCode">background: linear-gradient(90deg, #3b82f6, #ef4444);</div>
+            `;
+            const updateGrad = () => {
+                let c1 = document.getElementById('gColor1').value, c2 = document.getElementById('gColor2').value;
+                let css = `background: linear-gradient(90deg, ${c1}, ${c2});`;
+                document.getElementById('gradPreview').style = css;
+                document.getElementById('gradCode').innerText = css;
+            };
+            document.getElementById('gColor1').oninput = updateGrad;
+            document.getElementById('gColor2').oninput = updateGrad;
+        }
+
+        function loadColorPicker(p) {
+            p.innerHTML = `
+                <input type="color" id="pickerVal" value="#3b82f6" style="height: 60px; cursor:pointer;">
+                <div class="tool-result-box" id="pickerRes">HEX: #3b82f6</div>
+            `;
+            document.getElementById('pickerVal').oninput = (e) => {
+                document.getElementById('pickerRes').innerText = 'HEX: ' + e.target.value;
+            };
+        }
+
+        function loadBmiCalc(p) {
+            p.innerHTML = `
+                <div class="grid-2-tools">
+                    <input type="number" id="bmiWeight" placeholder="Berat Badan (kg)">
+                    <input type="number" id="bmiHeight" placeholder="Tinggi Badan (cm)">
+                </div>
+                <button class="btn-action-tool" onclick="
+                    let w = parseFloat(document.getElementById('bmiWeight').value);
+                    let h = parseFloat(document.getElementById('bmiHeight').value)/100;
+                    if(w && h){
+                        let bmi = (w / (h * h)).toFixed(1);
+                        document.getElementById('bmiRes').innerText = 'Skor BMI Anda: ' + bmi;
+                    }
+                ">Hitung BMI</button>
+                <div class="tool-result-box" id="bmiRes">Hasil BMI akan tampil di sini.</div>
+            `;
+        }
+
+        function loadDiscountCalc(p) {
+            p.innerHTML = `
+                <div class="grid-2-tools">
+                    <input type="number" id="discPrice" placeholder="Harga Awal (Rp)">
+                    <input type="number" id="discPercent" placeholder="Diskon (%)">
+                </div>
+                <button class="btn-action-tool" onclick="
+                    let p = parseFloat(document.getElementById('discPrice').value);
+                    let d = parseFloat(document.getElementById('discPercent').value);
+                    if(p && d){
+                        let cut = p * (d / 100);
+                        let final = p - cut;
+                        document.getElementById('discRes').innerText = 'Hemat: Rp ' + cut + ' | Harga Akhir: Rp ' + final;
+                    }
+                ">Hitung Diskon</button>
+                <div class="tool-result-box" id="discRes">Detail harga akan muncul di sini.</div>
+            `;
+        }
+
+        function loadAgeCalc(p) {
+            p.innerHTML = `
+                <label class="text-xs font-semibold">Pilih Tanggal Lahir:</label>
+                <input type="date" id="ageBirth">
+                <button class="btn-action-tool" onclick="
+                    let b = new Date(document.getElementById('ageBirth').value);
+                    if(b){
+                        let diff = new Date(Date.now() - b.getTime());
+                        document.getElementById('ageRes').innerText = 'Umur: ' + Math.abs(diff.getUTCFullYear() - 1970) + ' Tahun';
+                    }
+                ">Hitung Umur</button>
+                <div class="tool-result-box" id="ageRes">-</div>
+            `;
+        }
+
+        function loadPercentageCalc(p) {
+            p.innerHTML = `
+                <div class="grid-2-tools">
+                    <input type="number" id="pPart" placeholder="Berapa (%)">
+                    <input type="number" id="pTotal" placeholder="Dari Jumlah">
+                </div>
+                <button class="btn-action-tool" onclick="
+                    let p = parseFloat(document.getElementById('pPart').value);
+                    let t = parseFloat(document.getElementById('pTotal').value);
+                    if(p && t) document.getElementById('pRes').innerText = p + '% dari ' + t + ' adalah ' + (p/100 * t);
+                ">Hitung</button>
+                <div class="tool-result-box" id="pRes">-</div>
+            `;
+        }
+
+        function loadPassGen(p) {
+            p.innerHTML = `
+                <label class="text-xs font-semibold">Panjang Karakter: <span id="passLenVal">16</span></label>
+                <input type="range" id="passLen" min="6" max="32" value="16" class="w-full my-2" oninput="document.getElementById('passLenVal').innerText = this.value">
+                <button class="btn-action-tool" onclick="
+                    let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+                    let res = '';
+                    for(let i=0; i<document.getElementById('passLen').value; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
+                    document.getElementById('passRes').innerText = res;
+                ">Generate Password</button>
+                <div class="tool-result-box" id="passRes" style="font-weight:bold;">-</div>
+            `;
+        }
+
+        function loadPinGen(p) {
+            p.innerHTML = `
+                <button class="btn-action-tool" onclick="document.getElementById('pinRes').innerText = Math.floor(100000 + Math.random() * 900000)">Generate 6-Digit PIN</button>
+                <div class="tool-result-box" id="pinRes" style="font-size: 1.5rem; font-weight: bold;">------</div>
+            `;
+        }
+
+        function loadHashGen(p) {
+            p.innerHTML = `
+                <input type="text" id="hashInput" placeholder="Masukkan teks string...">
+                <button class="btn-action-tool" onclick="
+                    async function hash(str) {
+                        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+                        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+                    hash(document.getElementById('hashInput').value).then(h => document.getElementById('hashRes').innerText = h);
+                ">Generate SHA-256 Hash</button>
+                <div class="tool-result-box" id="hashRes">-</div>
+            `;
+        }
+
+        function loadQrGen(p) {
+            p.innerHTML = `
+                <input type="text" id="qrText" placeholder="Masukkan URL / Teks">
+                <button class="btn-action-tool" onclick="
+                    let container = document.getElementById('qrContainer');
+                    container.innerHTML = '';
+                    new QRCode(container, document.getElementById('qrText').value);
+                ">Buat QR Code</button>
+                <div id="qrContainer" style="margin-top: 1rem; background: #fff; padding: 10px; display: inline-block; border-radius: 8px;"></div>
+            `;
+        }
+
+        function loadBarcodeGen(p) {
+            p.innerHTML = `
+                <input type="text" id="bcText" value="THOHADEV123" placeholder="Masukkan Kode">
+                <button class="btn-action-tool" onclick="JsBarcode('#barcodeCanvas', document.getElementById('bcText').value)">Generate Barcode</button>
+                <div style="margin-top:1rem;"><svg id="barcodeCanvas"></svg></div>
+            `;
+        }
+
+        function loadUnitLength(p) {
+            p.innerHTML = `
+                <input type="number" id="mInput" placeholder="Masukkan Nilai (Meter)">
+                <button class="btn-action-tool" onclick="
+                    let m = parseFloat(document.getElementById('mInput').value);
+                    if(m) document.getElementById('unitRes').innerText = m + ' Meter = ' + (m/1000) + ' KM | ' + (m*100) + ' CM | ' + (m*3.28084).toFixed(2) + ' Feet';
+                ">Konversi</button>
+                <div class="tool-result-box" id="unitRes">-</div>
+            `;
+        }
+
+        let swInterval;
+        let swSeconds = 0;
+        function loadStopwatch(p) {
+            p.innerHTML = `
+                <div class="tool-result-box" id="swDisplay" style="font-size: 2rem; font-weight: bold; text-align: center;">00:00:00</div>
+                <div style="text-align:center; margin-top:0.5rem;">
+                    <button class="btn-action-tool" onclick="
+                        clearInterval(swInterval);
+                        swInterval = setInterval(() => {
+                            swSeconds++;
+                            let m = String(Math.floor(swSeconds/60)).padStart(2,'0');
+                            let s = String(swSeconds%60).padStart(2,'0');
+                            document.getElementById('swDisplay').innerText = '00:' + m + ':' + s;
+                        }, 1000);
+                    ">Start</button>
+                    <button class="btn-action-tool" style="background:#ef4444" onclick="clearInterval(swInterval)">Pause</button>
+                    <button class="btn-action-tool" style="background:#64748b" onclick="clearInterval(swInterval); swSeconds=0; document.getElementById('swDisplay').innerText='00:00:00';">Reset</button>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           3. INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+        window.addEventListener('load', () => {
+            initTheme();
+            renderPage();
+            updateAdminUI();
+            renderTools();
+            updateFavCount();
+
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                if (loader) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.remove(), 500);
+                }
+            }, 800);
+        });
+    </script>
+</body>
+</html>
     }
 
     body {
